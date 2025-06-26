@@ -1,7 +1,26 @@
-if (typeof process !== 'undefined' && !process.browser && process.platform !== 'browser' && parseInt(process.versions.node.split('.')[0]) < 18) {
-  console.error('Your node version is currently', process.versions.node)
-  console.error('Please update it to a version >= 22.x.x from https://nodejs.org/')
-  process.exit(1)
-}
+const mineflayer = require('mineflayer');
 
-module.exports = require('./lib/loader.js')
+const bot = mineflayer.createBot({
+  host: 'PLUMSMP.aternos.me',
+  port: 12862,
+  username: 'AFKbot'
+});
+
+bot.on('chat', (username, message) => {
+  if (username === bot.username) return;
+  if (message === 'hi') {
+    bot.chat(`Hello, ${username}!`);
+  }
+});
+
+bot.on('spawn', () => {
+  console.log('Bot has joined the server!');
+});
+
+bot.on('end', () => {
+  console.log('Bot has disconnected');
+});
+
+bot.on('error', err => {
+  console.log('Bot error:', err);
+});
